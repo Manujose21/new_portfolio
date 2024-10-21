@@ -1,9 +1,18 @@
+'use client';
 import { IoBook, IoHammer, IoGitBranchOutline, IoLayersOutline } from 'react-icons/io5';
 import Link from 'next/link';
+import { deleteCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 export const Sidebar = () => {
+
+    const router = useRouter();
+    const logout = () => {
+        deleteCookie('token');
+        router.push('/auth');
+    }
     return (
         <>
-            <aside className="min-h-screen w-64 bg-background-secondary text-color-text-primary p-4 ">
+            <aside className="min-h-screen w-64 bg-background-secondary text-color-text-primary p-4 relative">
                 <h1 className='text-xl text-white font-bold'>
                     <Link href={'/admin'}>
                         Mi portafolio
@@ -38,6 +47,7 @@ export const Sidebar = () => {
                         </li>
                     </Link>
                 </ul>
+                <span className='absolute bottom-4 left-4 font-bold cursor-pointer' onClick={logout}>Logout</span>
             </aside>
         </>
     )

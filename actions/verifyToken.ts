@@ -5,7 +5,7 @@ interface UserPayload {
     name: string,
     email: string
 }
-export default async function verifyToken(token: string): Promise<UserPayload | null> {
+export const verifyToken = async (token: string):Promise<UserPayload | null>  =>{
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
     try {
         
@@ -20,3 +20,4 @@ export default async function verifyToken(token: string): Promise<UserPayload | 
         return null
     }
 }
+
