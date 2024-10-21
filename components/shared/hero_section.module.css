@@ -1,0 +1,32 @@
+
+.animation_icon {
+    animation-name: animation-icon;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    animation-delay: .2s;
+}
+
+@keyframes animation-icon {
+    0% {
+        color: transparent;
+        top: 0;
+    }
+    25% {
+        color: #dd9efe38;
+    }
+    50% {
+        color: #dd9efe;
+        top: 50%;	
+    }
+    75% {
+        color: #dc9efe38;
+    }
+    80% {
+        color: transparent;
+    }
+    100% {
+        color: transparent;
+        top: 100%;
+    }
+}

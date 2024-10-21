@@ -1,0 +1,46 @@
+.cards_section {
+    display: block;
+    position: relative;
+}
+.cards_section::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -48px;
+    background-color: rgb(181, 58, 253);
+    box-shadow: 0 0 10px rgb(181, 58, 253);
+}
+.cards_section::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    border-radius: 50%;
+    top: 0px;
+    left: -43px;
+    background-color: rgb(56, 56, 56);
+}
+@keyframes animate-point {
+   0% {
+    top: 0;
+   }
+    50% {
+    top: 97%;
+   }
+   100%{
+    top: 0;
+   }
+
+}
+@media (max-width: 768px) {
+    .cards_section::after {
+        display: none;
+    }
+    .cards_section::before {
+        display: none;
+    }
+}

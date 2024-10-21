@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  name     String @db.VarChar(255)
+  email    String @unique @db.VarChar(255)
+  password String
+}
+
+model Proyects {
+  id           String                  @id @default(uuid())
+  title        String                  @db.VarChar(255)
+  description  String                  @db.Text
+  url          String                  @db.VarChar(255)
+  image        String                  @db.VarChar(255)
+  technologies Proyects_Technologies[]
+  created_at   DateTime                @default(now())
+}
+
+model Experience {
+  id           String                    @id @default(uuid())
+  title        String                    @db.VarChar(255)
+  job          String                    @db.VarChar(255)
+  description  String                    @db.Text
+  technologies Experience_Technologies[]
+  start_date   String
+  end_date     String
+}
+
+model Technologies {
+  id         String                    @id @default(uuid())
+  name       String                    @db.VarChar(255)
+  experience Experience_Technologies[]
+  proyects   Proyects_Technologies[]
+  created_at DateTime                  @default(now())
+}
+
+model Experience_Technologies {
+  id             String       @id @default(uuid())
+  experience     Experience   @relation(fields: [experienceId], references: [id])
+  experienceId   String
+  technologies   Technologies @relation(fields: [technologiesId], references: [id])
+  technologiesId String
+  created_at     DateTime     @default(now())
+}
+
+model Proyects_Technologies {
+  id             String       @id @default(uuid())
+  proyects       Proyects     @relation(fields: [proyectId], references: [id])
+  proyectId      String
+  technologies   Technologies @relation(fields: [technologiesId], references: [id])
+  technologiesId String
+  created_at     DateTime     @default(now())
+}
+
+model Courses {
+  id          String @id @default(uuid())
+  course      String @db.VarChar(255)
+  description String @db.Text
+  certificate String @db.VarChar(255)
+  date        String
+}
