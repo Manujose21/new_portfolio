@@ -343,7 +343,7 @@ export const Form = ({
 
                         {
                             (fieldsForm.image) 
-                            ? <CldImage 
+                            ? <CldImage                             
                                 src={fieldsForm.image}
                                 alt="image"
                                 width="500"

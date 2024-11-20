@@ -40,7 +40,7 @@ export const FormLogin = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
-        });;
+        });
         setCookie('token', isLoged.token)
         router.push('/admin')
     }
