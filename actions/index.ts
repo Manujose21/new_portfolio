@@ -140,11 +140,7 @@ export const getExperiences = async () => {
  
 export const getProjects = async () => {
     try {
-        const projects = await prisma.proyects.findMany({
-            include: {
-                technologies: true
-            }
-        });
+        const projects = await prisma.proyects.findMany();
         
         return projects;
     } catch (error) {
@@ -305,11 +301,19 @@ export const deleteCourse = async (id: string) => {
 
 export const deleteExperience = async (id: string) => {
     try {
+
+        await prisma.experience_Technologies.deleteMany({
+            where: {
+                experienceId: id
+            }
+        })
         const experienceDeleted = await prisma.experience.delete({
             where: {
                 id
             }
         })
+
+
         return experienceDeleted
     } catch (error) {
         console.log(error)
@@ -317,12 +321,22 @@ export const deleteExperience = async (id: string) => {
 }
 
 export const deleteProyect = async (id: string) => {
+    
     try {
+
+        await prisma.proyects_Technologies.deleteMany({
+            where: {
+                proyectId: id
+            }
+        })
+        
         const proyectDeleted = await prisma.proyects.delete({
             where: {
                 id
             }
         })
+
+
         return proyectDeleted
     } catch (error) {
         console.log(error)

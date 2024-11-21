@@ -1,4 +1,4 @@
-import { getTotals } from "@/actions/getTotals"
+import { getTotals } from "@/actions"
 
 export default async function Dashboard ()  {
 

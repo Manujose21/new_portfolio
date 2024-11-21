@@ -4,6 +4,7 @@ import { Button } from '../shared/Button';
 import { CardForm } from './CardForm';
 import { ToastContainer, toast } from 'react-toastify'
 import { CldUploadButton, CldImage, CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from 'next-cloudinary'  
+import { useRouter } from "next/navigation";
 
 
 interface Experience{
@@ -31,7 +32,7 @@ export const Form = ({
     const [fieldsForm, setFields] = useState(fields);
     const [currentJob, setCurrentJob] = useState(false);
     
-    console.log(fields)
+    const {refresh} = useRouter()
 
     const shortenText = (text: string) => {
         return text.length > 30 ? text.substring(0, 30) + '...' : text
@@ -53,6 +54,8 @@ export const Form = ({
                 });
 
                 setFields(() => ({...fieldsForm}))
+                // refresh();
+                window.location.reload();
             })
             .catch(() => {
                 toast.error('Error, something not created', {
