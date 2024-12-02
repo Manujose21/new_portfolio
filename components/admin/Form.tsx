@@ -32,7 +32,6 @@ export const Form = ({
     const [fieldsForm, setFields] = useState(fields);
     const [currentJob, setCurrentJob] = useState(false);
     
-    const {refresh} = useRouter()
 
     const shortenText = (text: string) => {
         return text.length > 30 ? text.substring(0, 30) + '...' : text
@@ -78,10 +77,14 @@ export const Form = ({
     }
 
     const handleUploadImage = ( result: CloudinaryUploadWidgetResults ) => {
+
+        console.log(result.info);
+
         if (result.info) {
             setFields((value) =>  ({
                 ...value,
-                image: (result.info as CloudinaryUploadWidgetInfo).secure_url
+                image: (result.info as CloudinaryUploadWidgetInfo).secure_url,
+                externalId: (result.info as CloudinaryUploadWidgetInfo).public_id
             }))
         }
     }

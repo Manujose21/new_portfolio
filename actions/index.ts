@@ -1,8 +1,9 @@
 'use server'
 import { prisma } from '@/prisma/prismaClient'
+import { deleteImage, updateImage } from './cloudinary.actions'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createCourse = async ({ course, description, image, date }: {[key:string]: any}): Promise<any> => {
+export const createCourse = async ({ course, description, image, date, externalId }: {[key:string]: any}): Promise<any> => {
 
     try {
         console.log(course, description, image, date)
@@ -13,6 +14,14 @@ export const createCourse = async ({ course, description, image, date }: {[key:s
                 certificate: image,
                 date
             },
+        })
+
+        await prisma.images_Courses.create({
+            data: {
+                url: image,
+                external_id: externalId,
+                course_id: courseCreated.id
+            }
         })
 
         return courseCreated
@@ -55,7 +64,7 @@ export const createExperience = async ({ title, job, description, start, end, te
   }
 
   
-export const createProyect = async ({ title, url, image, description, technologies: techsId }: {[key: string]: any}) => {
+export const createProyect = async ({ title, url, description, technologies: techsId }: {[key: string]: any}) => {
 
     try {
 
@@ -63,7 +72,6 @@ export const createProyect = async ({ title, url, image, description, technologi
             data: {
                 title,
                 description,
-                image,
                 url
             },
         })
@@ -116,7 +124,12 @@ export const createTech = async ( { name }: {[key:string]: any} ) => {
 
 export const getCourses = async () => {
     try {
-        const courses = await prisma.courses.findMany()
+        const courses = await prisma.courses.findMany({
+            include: {
+                images: true
+            }
+        });
+        
         return courses;
         
     } catch (error) {
@@ -201,19 +214,20 @@ export const updateTech = async (id: string, name: string) => {
     }
 }
 
-export const updateCourse = async (id: string, course: string, description: string, image: string, date: string) => {
+export const updateCourse = async (course: {id: string, course: string, description: string, certificate: string, date: string}) => {
     try {
         const courseUpdated = await prisma.courses.update({
             where: {
-                id
+                id: course.id
             },
             data: {
-                course,
-                description,
-                certificate: image,
-                date
+                course: course.course,
+                description: course.description,
+                certificate: course.certificate,
+                date: course.date
             }
         })
+        
         return courseUpdated
     } catch (error) {
         console.log(error)
@@ -249,7 +263,6 @@ export const updateProyect = async (id: string, title: string, description: stri
             data: {
                 title,
                 description,
-                image,
                 url
             }
         })
@@ -291,8 +304,14 @@ export const deleteCourse = async (id: string) => {
         const courseDeleted = await prisma.courses.delete({
             where: {
                 id
+            },
+            include: {
+                images: true
             }
         })
+        
+        await deleteImage(courseDeleted.images[0].external_id)
+
         return courseDeleted
     } catch (error) {
         console.log(error)
@@ -302,11 +321,6 @@ export const deleteCourse = async (id: string) => {
 export const deleteExperience = async (id: string) => {
     try {
 
-        await prisma.experience_Technologies.deleteMany({
-            where: {
-                experienceId: id
-            }
-        })
         const experienceDeleted = await prisma.experience.delete({
             where: {
                 id
@@ -323,19 +337,17 @@ export const deleteExperience = async (id: string) => {
 export const deleteProyect = async (id: string) => {
     
     try {
-
-        await prisma.proyects_Technologies.deleteMany({
-            where: {
-                proyectId: id
-            }
-        })
         
         const proyectDeleted = await prisma.proyects.delete({
             where: {
                 id
+            },
+            include: {
+                images: true
             }
         })
 
+        await deleteImage(proyectDeleted.images[0].external_id)
 
         return proyectDeleted
     } catch (error) {

@@ -1,5 +1,5 @@
 "use client";
-import { createTech, deleteTech } from "@/actions";
+import { createTech, deleteTech, updateTech } from "@/actions";
 import { Button } from "../shared/Button";
 import { Modal } from "../shared/Modal";
 import { Table } from "../shared/Table";
@@ -16,11 +16,15 @@ interface Props {
 export const TechnologiesPage = ({ technologies }: Props) => {
 
     const [ modal , setModal ] = useState(false);
+    const [ modalEdit , setModalEdit ] = useState(false);
     const [selectedTechToDelete, setSelectedTechToDelete] = useState('');
+    const [ selectedTechToEdit, setSelectedTechToEdit ] = useState({name: '', id: ''});
 
     const closeModal = () => {
-        console.log(modal)
         if(modal !== undefined) setModal(false);
+    }
+     const closeModalEdit = () => {
+        if(modalEdit !== undefined) setModalEdit(false);
     }
     
     const handleDeleteTech = () => {
@@ -38,6 +42,23 @@ export const TechnologiesPage = ({ technologies }: Props) => {
         })
         
     }
+
+    const handleEdit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        updateTech(selectedTechToEdit.id, selectedTechToEdit.name).then(() => { 
+            closeModalEdit();
+            window.location.reload();
+            
+        }).catch((error) => {
+            console.log(error);
+            toast.error(`Error al editar la tecnologia`, {
+                position: "bottom-right",
+                autoClose: 1000
+            });
+        })
+
+    }
     
     return (
         <>
@@ -49,6 +70,18 @@ export const TechnologiesPage = ({ technologies }: Props) => {
                     <Button onClick={closeModal}>Cancelar</Button>
                 </div>
             </Modal>
+
+            <Modal isModalOpen={modalEdit} closeModal={closeModalEdit}>
+                <h2 className='text-xl mt-2'>Editar Tecnologia</h2>  
+                <form onSubmit={handleEdit}>
+                    <input className="w-full mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400" type="text" value={selectedTechToEdit.name} onChange={(e) => setSelectedTechToEdit({...selectedTechToEdit, name: e.target.value})} />
+                    <div className='mt-4 flex justify-end gap-1'>
+                        <Button type="submit">Actualizar</Button>
+                        <Button onClick={closeModalEdit}>Cancelar</Button>
+                    </div>
+                </form>  
+            </Modal>
+
             <div className="mb-8">
                 <h1 className="text-2xl font-bold">Crear una nueva tenologia en mi portafolio</h1>
                 <div className="flex justify-center mt-16">
@@ -73,6 +106,10 @@ export const TechnologiesPage = ({ technologies }: Props) => {
                                 <IoPencil 
                                     size={25} 
                                     className='cursor-pointer hover:bg-background-light-secondary p-1 rounded-sm mx-2'
+                                    onClick={() => {
+                                        setSelectedTechToEdit(tech)
+                                        setModalEdit(true)
+                                    }}
                                 >
                                 </IoPencil>
                                 <IoTrash 

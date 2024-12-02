@@ -25,9 +25,9 @@ model Proyects {
   title        String                  @db.VarChar(255)
   description  String                  @db.Text
   url          String                  @db.VarChar(255)
-  image        String                  @db.VarChar(255)
   technologies Proyects_Technologies[]
   created_at   DateTime                @default(now())
+  images       Images_Proyects[]
 }
 
 model Experience {
@@ -50,18 +50,18 @@ model Technologies {
 
 model Experience_Technologies {
   id             String       @id @default(uuid())
-  experience     Experience   @relation(fields: [experienceId], references: [id])
+  experience     Experience   @relation(fields: [experienceId], references: [id], onDelete: Cascade)
   experienceId   String
-  technologies   Technologies @relation(fields: [technologiesId], references: [id])
+  technologies   Technologies @relation(fields: [technologiesId], references: [id], onDelete: Cascade)
   technologiesId String
   created_at     DateTime     @default(now())
 }
 
 model Proyects_Technologies {
   id             String       @id @default(uuid())
-  proyects       Proyects     @relation(fields: [proyectId], references: [id])
+  proyects       Proyects     @relation(fields: [proyectId], references: [id], onDelete: Cascade)
   proyectId      String
-  technologies   Technologies @relation(fields: [technologiesId], references: [id])
+  technologies   Technologies @relation(fields: [technologiesId], references: [id], onDelete: Cascade)
   technologiesId String
   created_at     DateTime     @default(now())
 }
@@ -72,4 +72,21 @@ model Courses {
   description String @db.Text
   certificate String @db.VarChar(255)
   date        String
+  images      Images_Courses[]
+}
+
+model Images_Courses {
+  id       String @id @default(uuid())
+  url      String @db.VarChar(255)
+  external_id String
+  course_id String
+  course   Courses @relation(fields: [course_id], references: [id], onDelete: Cascade)
+}
+
+model Images_Proyects {
+  id       String @id @default(uuid())
+  url      String @db.VarChar(255)
+  external_id String
+  proyect_id String
+  proyect   Proyects @relation(fields: [proyect_id], references: [id], onDelete: Cascade)
 }
