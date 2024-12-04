@@ -64,7 +64,7 @@ export const createExperience = async ({ title, job, description, start, end, te
   }
 
   
-export const createProyect = async ({ title, url, description, technologies: techsId }: {[key: string]: any}) => {
+export const createProyect = async ({ title, url, description, externalId, technologies: techsId, image }: {[key: string]: any}) => {
 
     try {
 
@@ -74,6 +74,14 @@ export const createProyect = async ({ title, url, description, technologies: tec
                 description,
                 url
             },
+        })
+
+        await prisma.images_Proyects.create({
+            data: {
+                url: image,
+                external_id: externalId,
+                proyect_id: proyect.id
+            }
         })
 
         techsId.forEach(async (element: string) => {
@@ -153,7 +161,12 @@ export const getExperiences = async () => {
  
 export const getProjects = async () => {
     try {
-        const projects = await prisma.proyects.findMany();
+        const projects = await prisma.proyects.findMany({
+            include: {
+                technologies: true,
+                images: true
+            }
+        });
         
         return projects;
     } catch (error) {
@@ -267,21 +280,40 @@ export const updateExperience = async (id: string, title: string, job: string, d
     }
 }
 
-export const updateProyect = async (id: string, title: string, description: string, image: string, url: string, techsId: string[]) => {
+export const updateProyect = async (
+    project: {
+        id: string, 
+        title: string, 
+        description: string, 
+        url: string, 
+        techsId: string[], 
+        images: { url: string, external_id: string, id: string }[]
+    }
+) => {
+
     try {
         const proyectUpdated = await prisma.proyects.update({
             where: {
-                id
+                id: project.id
             },
             data: {
-                title,
-                description,
-                url
+                title: project.title,
+                description: project.description,
+                url: project.url
             }
         })
 
+        await prisma.images_Proyects.update({
+            where: {
+                id: project.images[0].id
+            },
+            data: {
+                url: project.images[0].url,
+                external_id: project.images[0].external_id
+            }
+        })
 
-        techsId.forEach(async (id: string) => {
+        project.techsId.forEach(async (id: string) => {
             await prisma.proyects_Technologies.update({
                 where: {
                     id

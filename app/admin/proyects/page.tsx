@@ -7,7 +7,7 @@ export default async function ProyectsPage() {
   const technologies = await getTechs();
 
   const projects = await getProjects();
-
+   console.log(projects);
   return (
     <ProjectsPage technologies={technologies} projects={projects}/>
   );
