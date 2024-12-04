@@ -8,13 +8,34 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "../shared/Button";
 import { shorthenText } from "@/utils/utils";
+import { deleteImage } from "@/actions/cloudinary.actions";
+import { CldImage, CldUploadButton, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults } from "next-cloudinary";
 
-export default function CoursePage( { courses }: { courses: any[] } ) {
+
+interface Course {
+    id: string;
+    course: string;
+    description: string;
+    certificate: string;
+    date: string;
+    images: { url: string, external_id: string, id: string }[];
+  }
+  
+
+export default function CoursePage( { courses }: { courses: any[] }) {
    
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
+    const [ newImage, setNewImage ] = useState(true);
 
-    const [selectedCourseToEdit, setSelectedCourseToEdit] = useState({id: '', course: '', description: '', certificate: '', date: ''});
+    const [selectedCourseToEdit, setSelectedCourseToEdit] = useState<Course>({
+        id: '',
+        course: '',
+        description: '',
+        certificate: '',
+        date: '',
+        images: [],
+      });
     const [selectedCourseToDelete, setSelectedCourseToDelete] = useState('');
 
     const closeModal = () => {
@@ -24,14 +45,17 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
         if(modalEdit !== undefined) setModalEdit(false);
     }
 
-    const handleEditCourse = () => {
+    const handleEditCourse = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         updateCourse(
             {
                 id: selectedCourseToEdit.id,
                 course: selectedCourseToEdit.course,
                 description: selectedCourseToEdit.description,
                 certificate: selectedCourseToEdit.certificate,
-                date: selectedCourseToEdit.date
+                date: selectedCourseToEdit.date,
+                images: selectedCourseToEdit.images
             }
         ).then(() => {
             closeModalEdit();
@@ -46,6 +70,7 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
     }
 
     const handleDeleteCourse = () => {
+       
 
         deleteCourse(selectedCourseToDelete).then(() => { 
             closeModal();
@@ -61,7 +86,36 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
         
     }
 
-   console.log(courses);
+    const handleUploadImage = ( result: CloudinaryUploadWidgetResults ) => {
+
+        
+        if (result.info) {
+            const newImage = {
+                  url: (result.info as CloudinaryUploadWidgetInfo).secure_url,
+                  external_id: (result.info as CloudinaryUploadWidgetInfo).public_id,
+                  id: selectedCourseToEdit.images[0].id
+            };
+
+            setSelectedCourseToEdit((value) =>  {
+
+                const images = value.images = [{...newImage}];
+
+                return {
+                    ...value,
+                    images 
+                }
+            })
+        }
+        console.log(selectedCourseToEdit.images);
+        setNewImage(true);
+    }
+    const deleteImageFromCloudinary = async () => {
+        console.log("hi");
+        const imageDeleted = await deleteImage(selectedCourseToEdit.images[0].external_id)
+        if(imageDeleted.result !== "ok") return
+        console.log(imageDeleted);
+        setNewImage(false);
+    }
 
     return (
         <>
@@ -74,7 +128,7 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
             </Modal>
             <Modal isModalOpen={modalEdit} closeModal={closeModalEdit}>
                 <p>Editar curso</p>
-                <form action="" className='flex flex-col'>
+                <form onSubmit={handleEditCourse} className='flex flex-col'>
 
                     <input 
                         className="w-full mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400" 
@@ -87,12 +141,47 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
                         value={selectedCourseToEdit.description}
                         onChange={(e) => setSelectedCourseToEdit({...selectedCourseToEdit, description: e.target.value})}    
                     />
+
+                    <div className='relative'>
+                        {
+                            newImage 
+                            ? (
+                                <>
+                                    { selectedCourseToEdit.images && selectedCourseToEdit.images.length > 0 && (
+                                        <div>
+                                            <CldImage src={selectedCourseToEdit.images[0].url} alt="image" width={500} height={300}></CldImage>
+                                            <Button type='button' onClick={deleteImageFromCloudinary}>
+                                                <IoTrash size={20} />
+                                                Eliminar imagen
+                                            </Button>
+                                        </div>
+                                    )}
+                                </>
+                            )
+                            :  <CldUploadButton  
+                                    options={ {maxFiles: 1 } }
+                                    onSuccess={handleUploadImage}
+                                    uploadPreset="portfolio"
+                                    className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                                        
+                                >
+                                    {
+                                        (newImage) 
+                                        ?  shorthenText(selectedCourseToEdit.images[0].url, 70)
+                                        : 'Editar imagen'
+                                    }
+                                </CldUploadButton>
+                        }
+                        
+                    </div>
+
+                    
                     
                     {/* <input type="text" /> */}
 
                     <div className='flex justify-end mt-2 gap-4'>
-                        <Button onClick={closeModalEdit}>Cancelar</Button>
-                        <Button onClick={handleEditCourse}>Editar</Button>
+                        <Button type ='button' onClick={closeModalEdit}>Cancelar</Button>
+                        <Button type='submit'>Editar</Button>
                     </div>
                 </form>
             </Modal>
@@ -118,7 +207,7 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
                     >
                         
                         {
-                        courses.map((course: any, index) => (
+                        courses.map((course: Course, index) => (
                             <tr key={index} className='border-b border-blue-gray-200'>
                             <td className='py-3 px-4'>
                                 {course.course}
@@ -144,6 +233,7 @@ export default function CoursePage( { courses }: { courses: any[] } ) {
                                             description: course.description,
                                             certificate: course.certificate,
                                             date: course.date,
+                                            images: course.images
                                         })
                                     }}
                                 ></IoPencil>

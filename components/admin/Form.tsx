@@ -1,5 +1,6 @@
 'use client';
 import {  useState } from "react";
+import {shorthenText} from "@/utils/utils";
 import { Button } from '../shared/Button';
 import { CardForm } from './CardForm';
 import { ToastContainer, toast } from 'react-toastify'
@@ -33,9 +34,7 @@ export const Form = ({
     const [currentJob, setCurrentJob] = useState(false);
     
 
-    const shortenText = (text: string) => {
-        return text.length > 30 ? text.substring(0, 30) + '...' : text
-    }
+   
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -277,7 +276,7 @@ export const Form = ({
                         >
                             {
                                 (fieldsForm.image !== null) 
-                                ?  shortenText(fieldsForm.image)
+                                ?  shorthenText(fieldsForm.image, 30)
                                 : 'Subir imagen'
                             }
                         </CldUploadButton>
@@ -342,7 +341,7 @@ export const Form = ({
                         >
                             {
                                 (fieldsForm.image !== null) 
-                                ?  shortenText(fieldsForm.image)
+                                ?  shorthenText(fieldsForm.image, 30)
                                 : 'Subir imagen'
                             }
                         </CldUploadButton>

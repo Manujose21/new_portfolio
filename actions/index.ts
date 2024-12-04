@@ -214,7 +214,7 @@ export const updateTech = async (id: string, name: string) => {
     }
 }
 
-export const updateCourse = async (course: {id: string, course: string, description: string, certificate: string, date: string}) => {
+export const updateCourse = async (course: {id: string, course: string, description: string, certificate: string, date: string, images: { url: string, external_id: string, id: string }[]}) => {
     try {
         const courseUpdated = await prisma.courses.update({
             where: {
@@ -225,9 +225,22 @@ export const updateCourse = async (course: {id: string, course: string, descript
                 description: course.description,
                 certificate: course.certificate,
                 date: course.date
+            },
+        })
+
+
+        console.log(course.images)
+
+        await prisma.images_Courses.update({
+            where: {
+                id: course.images[0].id
+            },
+            data: {
+                url: course.images[0].url,
+                external_id: course.images[0].external_id
             }
         })
-        
+
         return courseUpdated
     } catch (error) {
         console.log(error)
