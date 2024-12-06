@@ -5,7 +5,8 @@ import bcrypt from 'bcrypt';
 
 export async function GET(request: NextRequest, response: NextResponse) {
 
-    console.log(request, response)
+    console.log(request, /* @next-codemod-error 'response' is passed as an argument. Any asynchronous properties of 'props' must be awaited when accessed. */
+    response)
 
     const userExists = await prisma.admin.findUnique({ 
         where: { email: process.env.ADMIN_EMAIL},

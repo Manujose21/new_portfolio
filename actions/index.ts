@@ -260,18 +260,26 @@ export const updateCourse = async (course: {id: string, course: string, descript
     }
 }
 
-export const updateExperience = async (id: string, title: string, job: string, description: string, start: string, end: string) => {
+export const updateExperience = async (
+    experience: {
+    id: string, 
+    title: string, 
+    job: string, 
+    description: string, 
+    start: string, 
+    end: string
+}) => {
     try {
         const experienceUpdated = await prisma.experience.update({
             where: {
-                id
+                id: experience.id
             },
             data: {
-                title,
-                job,
-                description,
-                start_date: start,
-                end_date: end
+                title: experience.title,
+                job: experience.job,
+                description: experience.description,
+                start_date: experience.start, 
+                end_date: experience.end,
             }
         })
         return experienceUpdated

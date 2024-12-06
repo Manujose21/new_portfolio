@@ -76,8 +76,8 @@ export const TechnologiesPage = ({ technologies }: Props) => {
                 <form onSubmit={handleEdit}>
                     <input className="w-full mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400" type="text" value={selectedTechToEdit.name} onChange={(e) => setSelectedTechToEdit({...selectedTechToEdit, name: e.target.value})} />
                     <div className='mt-4 flex justify-end gap-1'>
+                        <Button type="button" onClick={closeModalEdit}>Cancelar</Button>
                         <Button type="submit">Actualizar</Button>
-                        <Button onClick={closeModalEdit}>Cancelar</Button>
                     </div>
                 </form>  
             </Modal>

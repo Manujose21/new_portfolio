@@ -25,19 +25,19 @@ export const Menu = () => {
                         <ul className="flex gap-4 py-2 px-4 text-sm shadow-sm shadow-background-quaternary rounded-full bg-background-secondary bg-opacity-50 backdrop-blur-sm ">
                             <li className="list-none hover:text-revolver-800  dark:hover:text-revolver-300 flex gap-1 items-center">
                                 <IoHandLeft size={12}/>
-                                <Link href="#">Sobre mí</Link>
+                                <a href="#aboutMe">Sobre mí</a>
                             </li>
                             <li className="list-none hover:text-revolver-800 dark:hover:text-revolver-300 flex gap-1 items-center">
                                 <IoCodeSlash size={13}/>
-                                <Link href="#">Experiencias</Link>
+                                <a href="#experiences">Experiencias</a>
                             </li>
                             <li className="list-none hover:text-revolver-800 dark:hover:text-revolver-300 flex gap-1 items-center">
                                 <IoBriefcase size={12} />
-                                <Link href="#">Proyectos</Link>
+                                <a href="#projects">Proyectos</a>
                             </li>
                             <li className="list-none hover:text-revolver-800 dark:hover:text-revolver-300 flex gap-1 items-center">
                                 <IoBook size={12} />
-                                <Link href="#">Cursos</Link>
+                                <a href="#courses">Cursos</a>
                             </li>
                         </ul>
                     </nav>

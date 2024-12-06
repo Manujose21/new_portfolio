@@ -181,7 +181,7 @@ export default function CoursePage( { courses }: { courses: any[] }) {
 
                     <div className='flex justify-end mt-2 gap-4'>
                         <Button type ='button' onClick={closeModalEdit}>Cancelar</Button>
-                        <Button type='submit'>Editar</Button>
+                        <Button type='submit'>Actualizar</Button>
                     </div>
                 </form>
             </Modal>

@@ -17,6 +17,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`${baseUrl}/auth`)
   }
 
+  
+
   return NextResponse.next()
 }
  

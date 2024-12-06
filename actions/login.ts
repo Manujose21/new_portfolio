@@ -25,7 +25,7 @@ export const login = async (email: string, password:string) => {
     const token = await new SignJWT(user)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt() 
-        .setExpirationTime('2h')
+        .setExpirationTime('1h')
         .sign(secret); 
 
     userResponse.token = token

@@ -9,7 +9,7 @@ import { Button } from "../shared/Button";
 import { formatDate, shorthenText } from "@/utils/utils";
 import { CldImage, CldUploadButton, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { deleteImage } from "@/actions/cloudinary.actions";
-import { toast } from "react-toastify";
+
 
 interface Project {
     id: string;
@@ -176,8 +176,8 @@ export const ProjectsPage = ({ technologies, projects }: { technologies: any[], 
                         </div>
 
                         <div className="flex justify-end">
-                            <Button onClick={closeModalEdit}>Cancelar</Button>
-                            <Button type="submit" >Editar</Button>
+                            <Button type="button" onClick={closeModalEdit}>Cancelar</Button>
+                            <Button type="submit" >Actualizar</Button>
                         </div>
 
                     </form>

@@ -1,5 +1,6 @@
 "use client"
-import { createExperience, deleteExperience } from "@/actions"
+import { shorthenText } from "@/utils/utils"
+import { createExperience, deleteExperience, updateExperience } from "@/actions"
 import { Table } from "../shared/Table"
 import { Form } from "./Form"
 import { IoPencil, IoTrash } from "react-icons/io5"
@@ -11,12 +12,26 @@ import { Button } from "../shared/Button"
 export const ExperiencePage = ( { technologies, experiences }: { technologies: any[], experiences: any[] }) => {
 
     const [ modal , setModal ] = useState(false);
+    const [ modalEdit , setModalEdit ] = useState(false);
+    const [selectedExperienceToEdit, setSelectedExperienceToEdit] = useState({  
+        id: '',
+        title: '',
+        job: '',
+        description: '',
+        start_date: '',
+        end_date: '',
+        technologies: [],
+    });
+
     const [selectedExperienceToDelete, setSelectedExperienceToDelete] = useState('');
 
     const closeModal = () => {
         if(modal !== undefined) setModal(false);    
     }
 
+    const closeModalEdit = () => {
+        if(modalEdit !== undefined) setModalEdit(false);
+    }
     const handleDeleteExperience = () => {
 
         deleteExperience(selectedExperienceToDelete).then(() => { 
@@ -33,6 +48,31 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
         
     }
 
+    const handleEditExperience = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        updateExperience({
+            id: selectedExperienceToEdit.id,
+            title: selectedExperienceToEdit.title,
+            job: selectedExperienceToEdit.job,
+            description: selectedExperienceToEdit.description,
+            start: selectedExperienceToEdit.start_date,
+            end: selectedExperienceToEdit.end_date,
+        }).then(() => { 
+            closeModalEdit();
+            window.location.reload();
+            
+        }).catch((error) => {
+            console.log(error);
+            toast.error(`Error al editar la experiencia`, {
+                position: "bottom-right",
+                autoClose: 1000
+            });
+        })
+
+        setModalEdit(false);
+    }
+
     return (
         <div className="mb-8">
 
@@ -43,6 +83,59 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
                     <Button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={closeModal}>Cancelar</Button>
                 </div>
             </Modal>
+
+            <Modal isModalOpen={modalEdit} closeModal={closeModalEdit}>
+                <form
+                    onSubmit={handleEditExperience} 
+                    className="mt-4 flex flex-col gap-4"
+                >
+                    <input type="text" 
+                        onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, title: e.target.value }) }
+                        value={selectedExperienceToEdit.title}
+                        className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                    />
+
+                    <input type="text" 
+                        onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, job: e.target.value }) }
+                        value={selectedExperienceToEdit.job}
+                        className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                    />
+
+                    <textarea
+                        onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, description: e.target.value }) }
+                        value={selectedExperienceToEdit.description} 
+                        className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400">
+
+                    </textarea>
+
+                    <input type="date" 
+                        onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, start_date: e.target.value }) }
+                        value={selectedExperienceToEdit.start_date}
+                        className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                    />
+
+                    {
+                        (selectedExperienceToEdit.end_date === "actualmente") ?
+                        (<input 
+                            type="text" 
+                            value={selectedExperienceToEdit.end_date}
+                            disabled
+                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"    
+                        ></input>) :
+                        (<input 
+                            type="date" 
+                            onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, end_date: e.target.value }) }
+                            value={selectedExperienceToEdit.end_date}
+                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                        ></input>)
+                    }
+                    <div className="flex justify-end gap-4">
+                        <Button type="button" onClick={closeModalEdit}>Cancelar</Button>
+                        <Button type="submit">Actualizar</Button>
+                    </div>
+                </form>
+            </Modal>
+
             <h1 className="text-2xl font-bold">Crear una nueva experiencia en mi portafolio</h1>
             <div className="flex justify-center mt-4">
                 <Form 
@@ -76,7 +169,7 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
                             {experience.job}
                         </td>
                         <td className='py-3 px-4'>
-                            {experience.description}
+                            {shorthenText(experience.description, 30)}
                         </td>
                         <td className='py-3 px-4'>
                             {experience.start_date}
@@ -87,6 +180,10 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
 
                         <td className='py-3 px-4 flex gap-4 justify-center'>
                             <IoPencil 
+                                onClick={() => {
+                                    setModalEdit(true)
+                                    setSelectedExperienceToEdit(experience);
+                                }}
                                 size={25} 
                                 className='cursor-pointer hover:bg-background-light-secondary p-1 rounded-sm'
                             ></IoPencil>
