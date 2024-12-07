@@ -7,13 +7,15 @@ import { Form } from "./Form";
 import { IoPencil, IoTrash } from "react-icons/io5";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-
+import { useRouter } from "next/navigation";
 
 interface Props {
     technologies: any[],
 }
 
 export const TechnologiesPage = ({ technologies }: Props) => {
+
+    const { refresh } = useRouter();
 
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
@@ -31,7 +33,7 @@ export const TechnologiesPage = ({ technologies }: Props) => {
 
         deleteTech(selectedTechToDelete).then(() => { 
             closeModal();
-            window.location.reload();
+            refresh();
             
         }).catch((error) => {
             console.log(error);
@@ -48,7 +50,7 @@ export const TechnologiesPage = ({ technologies }: Props) => {
 
         updateTech(selectedTechToEdit.id, selectedTechToEdit.name).then(() => { 
             closeModalEdit();
-            window.location.reload();
+            refresh();
             
         }).catch((error) => {
             console.log(error);

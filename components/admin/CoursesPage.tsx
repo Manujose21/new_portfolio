@@ -10,20 +10,19 @@ import { Button } from "../shared/Button";
 import { shorthenText } from "@/utils/utils";
 import { deleteImage } from "@/actions/cloudinary.actions";
 import { CldImage, CldUploadButton, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults } from "next-cloudinary";
+import { useRouter } from "next/navigation";
+import { Course } from "@/interfaces/types";
 
 
-interface Course {
-    id: string;
-    course: string;
-    description: string;
-    certificate: string;
-    date: string;
-    images: { url: string, external_id: string, id: string }[];
-  }
-  
 
-export default function CoursePage( { courses }: { courses: any[] }) {
+interface Props {
+    courses: Course[];
+}
+
+export default function CoursePage( { courses }: Props) {
    
+    const { refresh } = useRouter();
+
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
     const [ newImage, setNewImage ] = useState(true);
@@ -59,7 +58,7 @@ export default function CoursePage( { courses }: { courses: any[] }) {
             }
         ).then(() => {
             closeModalEdit();
-            window.location.reload();
+            refresh();
         }).catch((error) => {
             console.log(error);
             toast.error(`Error al editar el curso`, {
@@ -74,7 +73,7 @@ export default function CoursePage( { courses }: { courses: any[] }) {
 
         deleteCourse(selectedCourseToDelete).then(() => { 
             closeModal();
-            window.location.reload();
+            refresh();
             
         }).catch((error) => {
             console.log(error);

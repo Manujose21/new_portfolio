@@ -9,7 +9,7 @@ export const HeroSection = ({className}: {className?: string}) => {
                 <h1 className="text-5xl font-bold">Hey, soy Manuel 👋</h1>
                 <p className="text-xl font-medium mt-4"> 
                     Soy un desarrollador web
-                    <span className="text-revolver-300">
+                    <span className="text-revolver-500">
                         {' '}frontend que ama transformar ideas en realidad digital.{' '}
                     </span>
                     Siempre buscando aprender nuevas tecnologías y colaborar en proyectos innovadores.

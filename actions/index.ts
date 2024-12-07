@@ -1,6 +1,6 @@
 'use server'
 import { prisma } from '@/prisma/prismaClient'
-import { deleteImage, updateImage } from './cloudinary.actions'
+import { deleteImage} from './cloudinary.actions'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createCourse = async ({ course, description, image, date, externalId }: {[key:string]: any}): Promise<any> => {
@@ -29,6 +29,8 @@ export const createCourse = async ({ course, description, image, date, externalI
     } catch (error) {
         console.log(error)
         return null
+    } finally {
+        prisma.$disconnect()
     }
 
 }
@@ -59,6 +61,8 @@ export const createExperience = async ({ title, job, description, start, end, te
 
     } catch (error) {
       console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
     
   }
@@ -96,6 +100,8 @@ export const createProyect = async ({ title, url, description, externalId, techn
         
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 
 }
@@ -125,7 +131,8 @@ export const createTech = async ( { name }: {[key:string]: any} ) => {
         
     } catch (error) {
         console.log(error)
-        // alert('error al crear la tecnologia')
+    } finally {
+        prisma.$disconnect()
     }
 
 }
@@ -142,6 +149,8 @@ export const getCourses = async () => {
         
     } catch (error) {
         throw error
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -156,6 +165,8 @@ export const getExperiences = async () => {
         
     } catch (error) {
         throw error
+    } finally {
+        prisma.$disconnect();   
     }
 }
  
@@ -171,6 +182,8 @@ export const getProjects = async () => {
         return projects;
     } catch (error) {
         throw error
+    } finally {
+        prisma.$disconnect();   
     }
 }
 export const getTechs = async () => {
@@ -180,6 +193,8 @@ export const getTechs = async () => {
         
     } catch (error) {
         throw error
+    } finally {
+        prisma.$disconnect()
     }
 }
   
@@ -207,6 +222,8 @@ export const getTotals = async () => {
         console.log(error)
         throw error
         
+    } finally {
+        prisma.$disconnect()
     }
 
 }
@@ -224,6 +241,8 @@ export const updateTech = async (id: string, name: string) => {
         return tech
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -257,6 +276,8 @@ export const updateCourse = async (course: {id: string, course: string, descript
         return courseUpdated
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -285,6 +306,8 @@ export const updateExperience = async (
         return experienceUpdated
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -336,6 +359,8 @@ export const updateProyect = async (
         return proyectUpdated
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -349,6 +374,8 @@ export const deleteTech = async (id: string) => {
         return techDeleted
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -368,6 +395,8 @@ export const deleteCourse = async (id: string) => {
         return courseDeleted
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -384,6 +413,8 @@ export const deleteExperience = async (id: string) => {
         return experienceDeleted
     } catch (error) {
         console.log(error)
+    } finally {
+        prisma.$disconnect()
     }
 }
 
@@ -405,6 +436,8 @@ export const deleteProyect = async (id: string) => {
         return proyectDeleted
     } catch (error) {
         console.log(error)
-    }
+    } finally {
+        prisma.$disconnect()
+    }   
 }
 

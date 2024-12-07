@@ -32,6 +32,7 @@ const config: Config = {
         '800': '#9a08cb',
         '900': '#77119e',
         '950': '#1c0424',
+        "transparent": "transparent",
       },
     
     },

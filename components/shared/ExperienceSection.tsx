@@ -1,25 +1,16 @@
 import { IoBriefcaseOutline } from 'react-icons/io5'
 import { CardExperience } from './CardExperience';
 import styles from './cards_section.module.css';
-export const ExperienceSection = () => {
+import { Experience } from '@/interfaces/types';
 
 
-    const experieces = [
-        {
-            title: 'Frontend Developer',
-            job: 'Freelance',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, dolore.',
-            technologies: ['React', 'Next.js', 'Tailwind'],
-            date: '2020-2021'
-        },
-        {
-            title: 'Frontend Developer',
-            job: 'Freelance',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, dolore.',
-            technologies: ['React', 'Next.js', 'Tailwind'],
-            date: '2020-2021'
-        }
-    ]
+interface Props {
+    experiences: Experience[]
+}
+
+export const ExperienceSection = ({ experiences }: Props) => {
+
+
 
     return (
         <section className="flex flex-col relative gap-4 mt-8 md:mt-32" id='experiences'>
@@ -29,10 +20,10 @@ export const ExperienceSection = () => {
             </div>
 
             <div>
-                <div className='flex flex-col justify-center items-center'>
+                <div className='grid grid-cols-1 gap-4'>
 
                     {
-                        experieces.map((experience, index) => (
+                        experiences.map((experience, index) => (
                             
                             <div key={index} className={`${styles.cards_section}`}>
                                 <CardExperience experience={experience}  />

@@ -1,5 +1,4 @@
 'use client';
-import Link from "next/link";
 import { IoHandLeft, IoCodeSlash, IoBriefcase, IoBook } from "react-icons/io5";
 import { IoMdMoon, IoMdSunny } from 'react-icons/io'
 import { useThemes } from "@/hooks/useThemes";

@@ -9,17 +9,17 @@ import { Button } from "../shared/Button";
 import { formatDate, shorthenText } from "@/utils/utils";
 import { CldImage, CldUploadButton, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { deleteImage } from "@/actions/cloudinary.actions";
+import { useRouter } from "next/navigation";
+import { Project, Technologies } from "@/interfaces/types";
 
 
-interface Project {
-    id: string;
-    title: string;
-    description: string;
-    url: string;
-    technologies: string[];
-    images: { url: string, external_id: string, id: string }[];
-  }
-export const ProjectsPage = ({ technologies, projects }: { technologies: any[], projects: any[]}) => {
+interface Props {
+    technologies: Technologies[];
+    projects: Project[]
+}
+export const ProjectsPage = ({ technologies, projects }: Props) => {
+
+    const { refresh } = useRouter();
 
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
@@ -49,7 +49,7 @@ export const ProjectsPage = ({ technologies, projects }: { technologies: any[], 
             .then((project) => {
                 console.log(project);
                 closeModal();
-                window.location.reload();   
+                refresh();  
             })
             .catch((error) => {
                 console.log(error);
@@ -68,7 +68,7 @@ export const ProjectsPage = ({ technologies, projects }: { technologies: any[], 
             images: selectedProjectToEdit.images
         }).then(() => {
             closeModalEdit();
-            window.location.reload();
+            refresh();
         }).catch((error) => {
             console.log(error);
         })

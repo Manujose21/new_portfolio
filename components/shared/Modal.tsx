@@ -1,5 +1,4 @@
 "use client"
-import { use, useEffect, useState } from 'react';
 import {  IoClose } from 'react-icons/io5'
 export const Modal = ({ children, isModalOpen, closeModal }: { children: React.ReactNode, isModalOpen: boolean, closeModal:() => void}) => {
 

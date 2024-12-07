@@ -8,8 +8,17 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import { Modal } from "../shared/Modal"
 import { Button } from "../shared/Button"
+import { useRouter } from "next/navigation"
+import { Experience, Technologies } from "@/interfaces/types"
 
-export const ExperiencePage = ( { technologies, experiences }: { technologies: any[], experiences: any[] }) => {
+interface Props {
+    technologies: Technologies[]
+    experiences: Experience[]
+}
+
+export const ExperiencePage = ( { technologies, experiences }: Props) => {
+
+    const { refresh } = useRouter();
 
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
@@ -36,7 +45,7 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
 
         deleteExperience(selectedExperienceToDelete).then(() => { 
             closeModal();
-            window.location.reload();
+            refresh();
             
         }).catch((error) => {
             console.log(error);
@@ -60,7 +69,7 @@ export const ExperiencePage = ( { technologies, experiences }: { technologies: a
             end: selectedExperienceToEdit.end_date,
         }).then(() => { 
             closeModalEdit();
-            window.location.reload();
+            refresh();
             
         }).catch((error) => {
             console.log(error);

@@ -7,8 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { CldUploadButton, CldImage, CloudinaryUploadWidgetResults, CloudinaryUploadWidgetInfo } from 'next-cloudinary'  
 import { useRouter } from "next/navigation";
 
-
-interface Experience{
+interface Technologie {
     id        : string,                   
     name      : string   
     created_at: Date               
@@ -21,7 +20,7 @@ interface Props {
     formAction: "technologies" | "experiences" | "proyects" | "courses",
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action: (fields: {[key:string]: any}) =>  Promise<void>,
-    technologies?: Experience[]
+    technologies?: Technologie[]
 }
 export const Form = ({ 
     fields,
@@ -30,12 +29,11 @@ export const Form = ({
     technologies
  }: Props) => {
 
+    const {refresh} = useRouter();
+
     const [fieldsForm, setFields] = useState(fields);
     const [currentJob, setCurrentJob] = useState(false);
     
-
-   
-
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         action(fieldsForm)
@@ -52,8 +50,8 @@ export const Form = ({
                 });
 
                 setFields(() => ({...fieldsForm}))
-                // refresh();
-                window.location.reload();
+                refresh();
+                // window.location.reload();
             })
             .catch(() => {
                 toast.error('Error, something not created', {

@@ -1,8 +1,13 @@
 import { IoCodeSlash } from 'react-icons/io5'
 import { CardProyect } from './CardProyect'
 import { Button } from './Button'
+import { Project } from '@/interfaces/types'
 
-export const ProyectsSection = () => {
+interface Props {
+    projects: Project[]
+}
+
+export const ProyectsSection = ({ projects }: Props) => {
 
     return (
         <section className="flex flex-col gap-4  mt-8 md:mt-32" id='projects'>
@@ -21,9 +26,11 @@ export const ProyectsSection = () => {
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <CardProyect />
-                <CardProyect />
-                <CardProyect />
+                {
+                    projects.map((project, index) => (
+                        <CardProyect project={project} key={index} />
+                    ))
+                }
             </div>
         </section>
     )
