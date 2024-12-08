@@ -25,7 +25,7 @@ export default async function Home() {
     <div className='px-4 md:px-32 max-w-6xl mx-auto min-h-screen'>
       <HeroSection />
       <ExperienceSection experiences={data.experiences}/>
-      <ProyectsSection projects={data.projects}/>
+      <ProyectsSection projects={data.projects} technologies={data.technologies}/>
       <CoursesSection courses={data.courses}/>
     </div>
     </>

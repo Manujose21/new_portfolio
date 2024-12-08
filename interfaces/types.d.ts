@@ -5,6 +5,7 @@ export interface Project {
     url: string;
     technologies: { id: string, technologiesId: string, proyectId: string, created_at: Date }[];
     images: { url: string, external_id: string, id: string }[];
+    created_at: Date
 }
 
 export interface Course {

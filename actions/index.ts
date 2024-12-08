@@ -1,6 +1,7 @@
 'use server'
 import { prisma } from '@/prisma/prismaClient'
 import { deleteImage} from './cloudinary.actions'
+import { Project } from '@/interfaces/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createCourse = async ({ course, description, image, date, externalId }: {[key:string]: any}): Promise<any> => {
@@ -441,3 +442,26 @@ export const deleteProyect = async (id: string) => {
     }   
 }
 
+export const filterProjectByTech = async (id: string) => {
+
+    try {
+        const projects = await prisma.proyects.findMany({
+            include: {
+                images: true,
+                technologies: true
+            },
+            where: {
+                technologies: {
+                    some: {
+                        technologiesId: id
+                    }
+                }
+            }
+        })
+
+        return projects
+    } catch (error) {
+        throw error
+    }
+
+}
