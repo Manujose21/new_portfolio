@@ -8,9 +8,10 @@ import { IoPencil, IoTrash } from "react-icons/io5";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { Technologies } from "@/interfaces/types";
 
 interface Props {
-    technologies: any[],
+    technologies: Technologies[],
 }
 
 export const TechnologiesPage = ({ technologies }: Props) => {
@@ -98,7 +99,7 @@ export const TechnologiesPage = ({ technologies }: Props) => {
                         
                         {
                         (technologies.length > 0) ?
-                        technologies.map((tech: any, index) => (
+                        technologies.map((tech: Technologies, index) => (
                             <tr key={index} className='border-b border-blue-gray-200'>
                             <td className='py-3 px-4'>{index + 1}</td>
                             <td className='py-3 px-4'>

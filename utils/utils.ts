@@ -5,7 +5,7 @@ export const shorthenText = (text: string, limit: number) => {
     return text
 }
 
-export const formatDate = (date: string) => {
+export const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("es-ES", { 
         day: 'numeric', 
         month: 'long', 

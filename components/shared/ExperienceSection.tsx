@@ -13,7 +13,7 @@ export const ExperienceSection = ({ experiences }: Props) => {
 
 
     return (
-        <section className="flex flex-col relative gap-4 mt-8 md:mt-32" id='experiences'>
+        <section className="flex flex-col relative gap-4 mt-8 md:mt-16" id='experiences'>
             <div className=' flex gap-4'>
                 <IoBriefcaseOutline size={35}/>
                 <h1 className="text-2xl font-semibold">Experiencias</h1>

@@ -2,8 +2,6 @@
 import { Button } from "./Button";
 import { IoLinkOutline } from "react-icons/io5";
 import { Project } from "@/interfaces/types";
-import { CldImage } from "next-cloudinary";
-
 
 interface Props {
  project: Project   

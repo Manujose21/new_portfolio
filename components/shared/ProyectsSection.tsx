@@ -55,7 +55,7 @@ export const ProyectsSection = ({ projects, technologies }: Props) => {
                     ? myProjects.map((project: Project, index: number) => (
                         <CardProyect project={project} key={index} />
                     ))
-                    : <p className='col-span-3 text-center text-2xl font-semibold mt-5'>No hay proyectos aun con esta tecnologia</p>
+                    : <p className='col-span-3 text-center text-2xl font-semibold mt-5'>No hay proyectos aún con esta tecnologia</p>
                 }
             </div>
         </section>

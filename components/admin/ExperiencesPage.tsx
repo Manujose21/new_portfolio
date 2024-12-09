@@ -19,10 +19,10 @@ interface Props {
 export const ExperiencePage = ( { technologies, experiences }: Props) => {
 
     const { refresh } = useRouter();
-
+    
     const [ modal , setModal ] = useState(false);
     const [ modalEdit , setModalEdit ] = useState(false);
-    const [selectedExperienceToEdit, setSelectedExperienceToEdit] = useState({  
+    const [selectedExperienceToEdit, setSelectedExperienceToEdit] = useState<Experience>({  
         id: '',
         title: '',
         job: '',
@@ -31,6 +31,8 @@ export const ExperiencePage = ( { technologies, experiences }: Props) => {
         end_date: '',
         technologies: [],
     });
+
+    const [ experienceFinish, setExperienceFinish ] = useState(false);
 
     const [selectedExperienceToDelete, setSelectedExperienceToDelete] = useState('');
 
@@ -125,18 +127,45 @@ export const ExperiencePage = ( { technologies, experiences }: Props) => {
 
                     {
                         (selectedExperienceToEdit.end_date === "actualmente") ?
-                        (<input 
-                            type="text" 
-                            value={selectedExperienceToEdit.end_date}
-                            disabled
-                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"    
-                        ></input>) :
-                        (<input 
-                            type="date" 
-                            onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, end_date: e.target.value }) }
-                            value={selectedExperienceToEdit.end_date}
-                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
-                        ></input>)
+                        (
+                            <>
+                                {
+                                    (experienceFinish) ?
+                                    (
+                                        <input 
+                                            type="date" 
+                                            value={selectedExperienceToEdit.end_date}
+                                            onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, end_date: e.target.value }) }
+                                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"    
+                                        ></input>  
+                                    )
+                                    :
+                                    (
+                                        <input 
+                                            type="text" 
+                                            value={selectedExperienceToEdit.end_date}
+                                            disabled
+                                            
+                                            className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"    
+                                        ></input>  
+                                        
+                                    )
+                                }
+                                <div className="flex items-center gap-4">
+                                    <label htmlFor="" className="text-sm">Finalizo tu experiencia?</label>
+                                    <input type="checkbox" onChange={() => setExperienceFinish(!experienceFinish)} className="mt-2" />
+                                </div>
+                                
+                            </>
+                        ) :
+                        (    
+                            <input 
+                                type="date" 
+                                onChange={ (e) =>  setSelectedExperienceToEdit({ ...selectedExperienceToEdit, end_date: e.target.value }) }
+                                value={selectedExperienceToEdit.end_date}
+                                className="mt-2 p-2 rounded-md border-[1.5px] border-background-primary focus:outline-none  focus:border-revolver-400"
+                            ></input>
+                        )
                     }
                     <div className="flex justify-end gap-4">
                         <Button type="button" onClick={closeModalEdit}>Cancelar</Button>
@@ -169,7 +198,7 @@ export const ExperiencePage = ( { technologies, experiences }: Props) => {
                     
                     {
                     (experiences.length > 0) ?
-                    experiences.map((experience: any, index) => (
+                    experiences.map((experience: Experience, index) => (
                         <tr key={index} className='border-b border-blue-gray-200'>
                         <td className='py-3 px-4'>
                             {experience.title}

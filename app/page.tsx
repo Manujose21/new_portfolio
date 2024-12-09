@@ -23,7 +23,7 @@ export default async function Home() {
   return (
     <>
     <div className='px-4 md:px-32 max-w-6xl mx-auto min-h-screen'>
-      <HeroSection />
+      <HeroSection techs={data.technologies}/>
       <ExperienceSection experiences={data.experiences}/>
       <ProyectsSection projects={data.projects} technologies={data.technologies}/>
       <CoursesSection courses={data.courses}/>

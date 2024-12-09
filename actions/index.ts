@@ -318,7 +318,6 @@ export const updateProyect = async (
         title: string, 
         description: string, 
         url: string, 
-        techsId: string[], 
         images: { url: string, external_id: string, id: string }[]
     }
 ) => {
@@ -345,17 +344,6 @@ export const updateProyect = async (
             }
         })
 
-        project.techsId.forEach(async (id: string) => {
-            await prisma.proyects_Technologies.update({
-                where: {
-                    id
-                },
-                data: {
-                    technologiesId: id,
-                    proyectId: proyectUpdated.id
-                }
-            })
-        })
 
         return proyectUpdated
     } catch (error) {

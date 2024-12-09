@@ -29,7 +29,8 @@ export const ProjectsPage = ({ technologies, projects }: Props) => {
         description: '',
         url: '',
         technologies: [],
-        images: []
+        images: [],
+        created_at : new Date()
     });
 
     const [newImage, setNewImage] = useState(true);
@@ -63,8 +64,7 @@ export const ProjectsPage = ({ technologies, projects }: Props) => {
             id: selectedProjectToEdit.id,
             title: selectedProjectToEdit.title,
             description: selectedProjectToEdit.description,
-            url: selectedProjectToEdit.url,
-            techsId: selectedProjectToEdit.technologies,            
+            url: selectedProjectToEdit.url,           
             images: selectedProjectToEdit.images
         }).then(() => {
             closeModalEdit();
@@ -208,7 +208,7 @@ export const ProjectsPage = ({ technologies, projects }: Props) => {
                         
                         {
                         (projects.length > 0) ?
-                        projects.map((project: any, index) => (
+                        projects.map((project: Project, index) => (
                             <tr key={index} className='border-b border-blue-gray-200'>
                             <td className='py-3 px-4'>
                                 {project.title}

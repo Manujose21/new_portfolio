@@ -1,5 +1,4 @@
 import { IoBookOutline } from "react-icons/io5"
-import { CardProyect } from "./CardProyect"
 import { CardCourses } from "./CardCourses"
 import { Course } from "@/interfaces/types"
 
